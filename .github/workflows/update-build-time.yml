@@ -1,0 +1,32 @@
+name: Update Build Time
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-build-time:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Update Build Time
+        run: |
+          DATE=$(date)
+          # DOMContentLoaded event listener added to prevent race condition
+          echo "document.addEventListener(\"DOMContentLoaded\", function () {" > buildtime.js
+          echo "  document.getElementById(\"versionInfo\").textContent =" >> buildtime.js
+          echo "    \"Last build time: $DATE\";" >> buildtime.js
+          echo "});" >> buildtime.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Force add changed buildtime.js files (even if they are in the ignore list)
+          git add -f buildtime.js
+          git commit -m "Update build time"
+          git push

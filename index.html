@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js"></script>
+    <script src="buildtime.js"></script>
+    <title>Telegram WebApp PoC</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--tg-theme-bg-color, #fff);
+        color: var(--tg-theme-text-color, #000);
+        text-align: center;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        background-color: var(--tg-theme-button-color, #0088cc);
+        color: var(--tg-theme-button-text-color, #fff);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Telegram WebApp Demo</h1>
+    <button id="sendHelloButton">Send "Hello" to Bot</button>
+    <p id="versionInfo">Last build time will be displayed here</p>
+  </body>
+</html>
