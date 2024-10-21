@@ -3,7 +3,7 @@ name: Update Build Time
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   update-build-time:
