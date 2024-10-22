@@ -20,36 +20,42 @@ if (!token) {
   console.error(
     "Error: TELEGRAM_BOT_TOKEN is not set. Please set it in the environment variables or in the code."
   );
-  process.exit(1); // Exit the process with a failure status
+  process.exit(1); // Exit the process with a failure status to indicate an error
 }
 
 // Initialize the bot with the token and enable polling mode
-// Polling mode allows the bot to periodically check for new messages from Telegram servers
+// Polling mode allows the bot to periodically check for new messages from Telegram servers, ensuring real-time interaction
 const bot = new TelegramBot(token, { polling: true });
 
 // Set up an event listener for all incoming messages
+// This listener triggers a callback function whenever a new message is received by the bot
 bot.on("message", (msg) => {
-  // Extract the chat ID where the message came from
-  // This ID will be used later to send a response
-  const chatId = msg.chat.id;
-
   // Log the entire message object for debugging purposes
-  // This helps in understanding the structure of incoming messages during development
+  // This helps developers understand the structure and content of incoming messages during development
   console.log("Received message:", JSON.stringify(msg, null, 2));
 
-  // Check if the message text is exactly 'hello' (case-insensitive)
-  // We use a regular expression to ensure an exact match
-  if (/^hello$/i.test(msg.text)) {
-    // Set the response message in Korean
-    const response = "Hello~! Nice to meet you :-D";
+  // Extract the chat ID from the incoming message
+  // The chat ID is used to identify the conversation and send responses back to the correct user
+  const chatId = msg.chat.id;
+  const text = msg.text?.toLowerCase(); // Convert the message text to lowercase to handle case-insensitive commands
 
-    // Send the response message to the chat
-    bot.sendMessage(chatId, response);
-
-    // Log the sent response for debugging
-    console.log("Sent response:", response);
+  // Check if the message text is 'hello'
+  // If it is, invoke the handleHelloCommand function to process the command
+  if (text === "hello") {
+    handleHelloCommand(chatId);
   }
+  // Additional command handlers can be added here as needed
 });
+
+// Function to handle the 'hello' command
+// This function sends a friendly greeting message back to the user
+function handleHelloCommand(chatId) {
+  const response = "Hello~! Nice to meet you :-D";
+  bot
+    .sendMessage(chatId, response) // Send the greeting message to the user
+    .then(() => console.log("Sent response:", response)) // Log the successful sending of the message
+    .catch((error) => console.error("Error sending message:", error)); // Log any errors that occur during message sending
+}
 
 // ---------------------
 // botWithWebApp.js: Telegram Bot with Web App
